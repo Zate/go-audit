@@ -3,6 +3,7 @@ module github.com/slackhq/go-audit
 go 1.12
 
 require (
+	github.com/ZachtimusPrime/Go-Splunk-HTTP v0.0.0-20190909123348-f5369e72b8af
 	github.com/davecgh/go-spew v0.0.0-20160907170601-6d212800a42e // indirect
 	github.com/fsnotify/fsnotify v0.0.0-20160816051541-f12c6236fe7b // indirect
 	github.com/hashicorp/hcl v0.0.0-20160902165219-99df0eb941dd // indirect

@@ -1,3 +1,5 @@
+github.com/ZachtimusPrime/Go-Splunk-HTTP v0.0.0-20190909123348-f5369e72b8af h1:aTyc5cOSaXiCh1n/mf/COjrWCV9f2yXUuPIeIEs14xU=
+github.com/ZachtimusPrime/Go-Splunk-HTTP v0.0.0-20190909123348-f5369e72b8af/go.mod h1:RsO+aYhoc9OyzUJwKHWWXXsjLN/85QaaEHx/PWa2+/I=
 github.com/davecgh/go-spew v0.0.0-20160907170601-6d212800a42e h1:PuhFC+IBoXcNHhkaUTRc+kNN0MtTMPFoWWBXyNMw7ww=
 github.com/davecgh/go-spew v0.0.0-20160907170601-6d212800a42e/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/fsnotify/fsnotify v0.0.0-20160816051541-f12c6236fe7b h1:lHoxUxMozh/yCASOoFep9dPMva62ztmxKK2VB8//Aoo=

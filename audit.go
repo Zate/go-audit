@@ -16,6 +16,7 @@ import (
 	"strings"
 	"syscall"
 
+	"github.com/ZachtimusPrime/Go-Splunk-HTTP/splunk"
 	"github.com/spf13/viper"
 	"gopkg.in/Graylog2/go-gelf.v2/gelf"
 )
@@ -38,6 +39,11 @@ func loadConfig(configFile string) (*viper.Viper, error) {
 	config.SetDefault("message_tracking.enabled", true)
 	config.SetDefault("message_tracking.log_out_of_order", false)
 	config.SetDefault("message_tracking.max_out_of_order", 500)
+	config.SetDefault("output.splunk.enabled", false)
+	config.SetDefault("output.splunk.host", "your.hec.host")
+	config.SetDefault("output.splunk.port", 443)
+	config.SetDefault("output.splunk.tls", true)
+	config.SetDefault("output.splunk.token", "01234567-1234-abcd-1234-1234567890ab")
 	config.SetDefault("output.syslog.enabled", false)
 	config.SetDefault("output.syslog.priority", int(syslog.LOG_LOCAL0|syslog.LOG_WARNING))
 	config.SetDefault("output.syslog.tag", "go-audit")
@@ -190,6 +196,45 @@ func createSyslogOutput(config *viper.Viper) (*AuditWriter, error) {
 	}
 
 	return NewAuditWriter(syslogWriter, attempts), nil
+}
+
+func createSplunkOutput(config *viper.Viper) (*AuditWriter, error) {
+	attempts := config.GetInt("output.splunk.attempts")
+	host := config.GetString("output.splunk.host")
+	port := config.GetInt("output.splunk.port")
+	tls := config.GetBool("output.splunk.tls")
+	token := config.GetString("output.splunk.token")
+	url := "https://"
+	if tls != true {
+		url = "http://"
+	}
+
+	url = url + host
+
+	if port != 443 {
+		url = url + ":" + string(port)
+	}
+
+	url = url + "/services/collector"
+
+	splunkClient := splunk.NewClient(
+		nil,
+		url,
+		token,
+		"go-audit",
+		"go-audit",
+		"go-audit",
+	)
+
+	splunkWriter := splunkClient.Writer()
+	// splunkWriter := &splunk.Writer{
+	// 	Client:         splunkClient,
+	// 	FlushInterval:  10 * time.Second, // How often we'll flush our buffer
+	// 	FlushThreshold: 25,               // Max messages we'll keep in our buffer, regardless of FlushInterval
+	// 	MaxRetries:     attempts,         // Number of times we'll retry a failed send
+	// }
+
+	return NewAuditWriter(splunkWriter, attempts), nil
 }
 
 func createFileOutput(config *viper.Viper) (*AuditWriter, error) {

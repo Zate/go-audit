@@ -124,6 +124,14 @@ func createOutput(config *viper.Viper) (*AuditWriter, error) {
 		}
 	}
 
+	if config.GetBool("output.splunk.enabled") == true {
+		i++
+		writer, err = createSplunkOutput(config)
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	if config.GetBool("output.gelf.enabled") == true {
 		i++
 		writer, err = createGELFOutput(config)

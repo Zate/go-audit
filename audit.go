@@ -124,6 +124,14 @@ func createOutput(config *viper.Viper) (*AuditWriter, error) {
 		}
 	}
 
+	if config.GetBool("output.splunk.enabled") == true {
+		i++
+		writer, err = createSplunkOutput(config)
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	if config.GetBool("output.gelf.enabled") == true {
 		i++
 		writer, err = createGELFOutput(config)
@@ -199,6 +207,7 @@ func createSyslogOutput(config *viper.Viper) (*AuditWriter, error) {
 }
 
 func createSplunkOutput(config *viper.Viper) (*AuditWriter, error) {
+	
 	attempts := config.GetInt("output.splunk.attempts")
 	host := config.GetString("output.splunk.host")
 	port := config.GetInt("output.splunk.port")
@@ -217,6 +226,8 @@ func createSplunkOutput(config *viper.Viper) (*AuditWriter, error) {
 
 	url = url + "/services/collector"
 
+	l.Printf("Starting Splunk client for %v with token %v", url, token)
+
 	splunkClient := splunk.NewClient(
 		nil,
 		url,
@@ -233,7 +244,7 @@ func createSplunkOutput(config *viper.Viper) (*AuditWriter, error) {
 	// 	FlushThreshold: 25,               // Max messages we'll keep in our buffer, regardless of FlushInterval
 	// 	MaxRetries:     attempts,         // Number of times we'll retry a failed send
 	// }
-
+	l.Printf("Started Splunk writer for %v with token %v", url, token)
 	return NewAuditWriter(splunkWriter, attempts), nil
 }
 

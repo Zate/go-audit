@@ -214,7 +214,7 @@ func createSyslogOutput(config *viper.Viper) (*AuditWriter, error) {
 }
 
 func createSplunkOutput(config *viper.Viper) (*AuditWriter, error) {
-	
+
 	attempts := config.GetInt("output.splunk.attempts")
 	host := config.GetString("output.splunk.host")
 	port := config.GetInt("output.splunk.port")

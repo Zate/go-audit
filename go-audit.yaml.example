@@ -35,6 +35,22 @@ output:
     # If a write fails go-audit will sleep for 1 second before retrying
     # Default is 3
     attempts: 2
+  # Writes events to a Splunk HEC https endpoint as json
+  splunk:
+    enabled: false
+    attempts: 1
+    
+    # The dns/hostname of the Splunk HEC connector that will recieve the payload
+    host: your.hec.host
+
+    # The port the Splunk HEC is listening on.  HTTPS by default
+    port: 443
+
+    # Whether the exposed port on the host is protected by tls.  Defaults to true
+    tls: true
+
+    # The token used in the http header to let Splunk HEC know which index to put the data
+    token: 01234567-1234-abcd-1234-1234567890ab
 
   # Writes logs to syslog
   syslog:
